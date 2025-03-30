@@ -1,0 +1,6 @@
+elphick.pandera\_utils.pandera\_utils.load\_schema\_from\_yaml
+==============================================================
+
+.. currentmodule:: elphick.pandera_utils.pandera_utils
+
+.. autofunction:: load_schema_from_yaml
