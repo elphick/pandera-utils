@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pandera-utils"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Greg <11791585+elphick@users.noreply.github.com>"]
 readme = "README.md"
 packages = [{include = "elphick/pandera_utils"}]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.9,<3.13"
 pandera = {extras = ["io"], version = "^0.23.1"}
 
 
