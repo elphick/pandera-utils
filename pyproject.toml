@@ -10,7 +10,7 @@ packages = [{include = "elphick/pandera_utils"}]
 python = ">=3.10,<3.13"
 pandera = {extras = ["io"], version = "^0.23.1"}
 
-version bump[tool.poetry.group.dev.dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
 sphinx = "^7.3.7"
 sphinx-gallery = "^0.16.0"
