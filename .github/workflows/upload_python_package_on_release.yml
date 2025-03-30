@@ -5,13 +5,13 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   check_version:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for Trusted Publishers
+      contents: read
     outputs:
       version_changed: ${{ steps.check.outputs.version_changed }}
 
@@ -47,20 +47,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
+
       - name: Install Poetry
         run: |
           pip install poetry==1.5.0
+
       - name: Install dependencies
         run: |
           poetry install --all-extras --no-interaction --no-root
+
       - name: Build package
         run: poetry build
-      - name: Publish package
-        uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository-url: https://upload.pypi.org/legacy/
