@@ -10,7 +10,6 @@ Welcome to pandera-utils documentation!
    :hidden:
    :glob:
 
-
    usage/installation
    usage/quickstart
    auto_examples/index
