@@ -3,29 +3,32 @@ Quick Start Guide
 
 This page will describe the basic steps to use the package.
 
-.. note::
+The package is designed to be used with pandera yaml schema files that
+have been modified to include the metadata key for each of teh column entries.
 
-   This is not an example, but simple static code blocks.
+A good way to create a yaml schema from a pandas dataframe is to use the
+`pandera.infer_schema <https://pandera.readthedocs.io/en/stable/schema_inference.html>`_ function.
 
+You can add the following keys to the metadata key for each of your columns:
 
-You'll probably first demonstrate imports...
-
-..  code-block:: python
-
-    import xarray as xr
-    from elphick.mc.mass_composition import MassComposition
-
-You may describe some prerequisites or requirements, and then the key command to instantiate.
+- alias
+- decimals
+- calculation
 
 ..  code-block:: python
 
-    obj_mc: MassComposition = MassComposition(df_data)
+    import pandera-utils
+    processor = DataFrameMetaProcessor(schema)
 
-And then demonstrate a common method.
+Pre-process the dataframe to manage aliases, rounding and perform calculations.
 
 ..  code-block:: python
 
-    obj_mc.aggregate()
+    processed_df = processor.preprocess(dataframe)
 
 
-For examples that demonstrate a range of use cases, see the :doc:`/auto_examples/index`.
+Finally, you can validate the dataframe using the schema.
+
+..  code-block:: python
+
+    processor.validate(processed_df)
