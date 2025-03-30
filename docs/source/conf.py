@@ -1,24 +1,18 @@
 import os
 import sys
 
-import plotly
-from plotly.io._sg_scraper import plotly_sg_scraper
-
-image_scrapers = ('matplotlib', plotly_sg_scraper,)
-
-from plotly.io._sg_scraper import plotly_sg_scraper
-# import plotly.io as pio
-#
-# pio.renderers.default = 'sphinx_gallery_png'  # 'sphinx_gallery'
+import elphick.pandera_utils as pandera_utils
 
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'elphick-template'
-copyright = '2023, Greg Elphick'
+project = 'pandera-utils'
+copyright = '2025, Greg Elphick'
 author = 'Greg Elphick'
+version = pandera_utils.__version__
+
 
 # -- General configuration ---------------------------------------------------
 
@@ -42,7 +36,6 @@ sphinx_gallery_conf = {
     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
     # 'within_subsection_order': FileNameSortKey,
     'capture_repr': ('_repr_html_', '__repr__'),
-    'image_scrapers': image_scrapers
 }
 
 # Add any paths that contain templates here, relative to this directory.

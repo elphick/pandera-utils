@@ -1,13 +1,13 @@
 API Reference
 =============
 
-.. automodule:: namespace.package
+.. automodule:: elphick.pandera_utils
    :members:
 
 .. autosummary::
    :toctree: _autosummary
    :recursive:
 
-    module
+    pandera_utils
 
 

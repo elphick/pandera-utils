@@ -1,0 +1,24 @@
+columns:
+  column1:
+    dtype: int
+    checks:
+      greater_than: 0
+    required: false
+    coerce: true
+    metadata:
+      alias: col1
+  column2:
+    dtype: float
+    checks:
+      greater_than_or_equal_to: 0.0
+    required: false
+    metadata:
+      decimals: 2
+  column3:
+    dtype: float
+    checks:
+      less_than: 100.
+    required: false
+    metadata:
+      calculation: "column1 + column2"
+      decimals: 2
