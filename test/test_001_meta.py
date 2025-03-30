@@ -8,7 +8,7 @@ from elphick.pandera_utils.pandera_utils import load_schema_from_yaml, DataFrame
 
 @pytest.fixture
 def schema():
-    yaml_path = Path("../assets/test_schema.yaml")
+    yaml_path = Path(__file__).resolve().parents[1] / f'assets/test_schema.yaml'
     return load_schema_from_yaml(yaml_path)
 
 
