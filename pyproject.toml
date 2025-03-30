@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "elphick/pandera_utils"}]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = ">=3.10,<3.13"
 pandera = {extras = ["io"], version = "^0.23.1"}
 
 
