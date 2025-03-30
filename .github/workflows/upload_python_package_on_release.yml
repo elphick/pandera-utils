@@ -44,6 +44,9 @@ jobs:
     needs: check_version
     if: needs.check_version.outputs.version_changed == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Ensure this is included
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
