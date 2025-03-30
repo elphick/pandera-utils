@@ -4,7 +4,7 @@ Quick Start Guide
 This page will describe the basic steps to use the package.
 
 The package is designed to be used with pandera yaml schema files that
-have been modified to include the metadata key for each of teh column entries.
+have been modified to include the metadata key for each of the column entries.
 
 A good way to create a yaml schema from a pandas dataframe is to use the
 `pandera.infer_schema <https://pandera.readthedocs.io/en/stable/schema_inference.html>`_ function.
