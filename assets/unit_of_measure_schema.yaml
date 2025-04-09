@@ -1,0 +1,6 @@
+columns:
+  my_length_column:
+    dtype: float
+    metadata:
+      pandera_utils:
+        unit_of_measure: "m"

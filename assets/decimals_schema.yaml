@@ -1,0 +1,7 @@
+columns:
+  my_float_column:
+    dtype: float32
+    coerce: true
+    metadata:
+      pandera_utils:
+        decimals: 2

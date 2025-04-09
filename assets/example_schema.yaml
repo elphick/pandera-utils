@@ -6,19 +6,24 @@ columns:
     required: false
     coerce: true
     metadata:
-      alias: col1
+      pandera_utils:
+        unit_of_measure: "m"
+        aliases: [ col1 ]
   column2:
     dtype: float
     checks:
       greater_than_or_equal_to: 0.0
     required: false
     metadata:
-      decimals: 2
+      pandera_utils:
+        decimals: 1
   column3:
     dtype: float
     checks:
       less_than: 100.
     required: false
     metadata:
-      calculation: "column1 + column2"
-      decimals: 2
+      pandera_utils:
+        calculation: "column1 + column2"
+        inputs: [ column1, column2 ]
+        decimals: 2
