@@ -1,0 +1,19 @@
+columns:
+  my_color_column:
+    dtype: category
+    checks:
+      isin: ['R', 'G', 'B']
+    metadata:
+      pandera_utils:
+        category:
+          add_all_categories: true
+          ordered: false
+          label:
+            map: {'R': 'Red', 'G': 'Green', 'B': 'Blue'}
+            dtype: category
+          description:
+            map: {'R': 'The color red', 'G': 'The color green', 'B': 'The color blue'}
+            dtype: category
+          wavelength:
+            map: {'R': 700, 'G': 546, 'B': 435}
+            dtype: int

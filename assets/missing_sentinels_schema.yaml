@@ -1,0 +1,8 @@
+columns:
+  my_nullable_int_column:
+    dtype: Int8  # or Int16, Int32, Int64
+    nullable: true
+    coerce: true  # must be present and set to true
+    metadata:
+      pandera_utils:
+        missing_sentinels: [-1, -9]

@@ -12,6 +12,7 @@ Welcome to pandera-utils documentation!
 
    usage/installation
    usage/quickstart
+   user_guide
    auto_examples/index
    glossary/*
    api/modules

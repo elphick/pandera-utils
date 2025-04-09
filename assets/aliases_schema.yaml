@@ -1,0 +1,6 @@
+columns:
+  my_pet_column:
+    dtype: object
+    metadata:
+      pandera_utils:
+        aliases: ['pets', 'my_pets']

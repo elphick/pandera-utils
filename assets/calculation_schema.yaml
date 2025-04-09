@@ -1,0 +1,31 @@
+columns:
+  wet_mass:
+    dtype: float32
+    coerce: true
+    description: 'The mass of the sample when wet'
+    checks:
+      greater_than: 0
+    metadata:
+      pandera_utils:
+        unit_of_measure: 'kg'
+  dry_mass:
+    dtype: float32
+    coerce: true
+    description: 'The mass of the sample when oven dried'
+    checks:
+      greater_than: 0
+    metadata:
+      pandera_utils:
+        unit_of_measure: 'kg'
+  moisture:
+    dtype: float32
+    coerce: true
+    description: 'The percentage of water in the sample'
+    checks:
+      greater_than: 0
+    metadata:
+      pandera_utils:
+        unit_of_measure: '%'
+        calculation: '(wet_mass - dry_mass) / dry_mass * 100'
+        inputs: [ 'wet_mass', 'dry_mass' ]
+

@@ -1,6 +1,8 @@
 import os
 import sys
 
+from sphinx_gallery.sorting import FileNameSortKey
+
 import elphick.pandera_utils as pandera_utils
 
 sys.path.insert(0, os.path.abspath('..'))
@@ -34,7 +36,7 @@ sphinx_gallery_conf = {
     'ignore_pattern': r'(__init__)\.py',
     'examples_dirs': '../../examples',  # path to your example scripts
     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
-    # 'within_subsection_order': FileNameSortKey,
+    'within_subsection_order': FileNameSortKey,
     'capture_repr': ('_repr_html_', '__repr__'),
 }
 

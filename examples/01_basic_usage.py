@@ -18,7 +18,7 @@ __file__ = Path(inspect.getfile(inspect.currentframe())).resolve()
 # Load Schema
 # -----------
 # Load the schema from the YAML file
-yaml_path = __file__.parents[1] / "assets/test_schema.yaml"
+yaml_path = __file__.parents[1] / "assets/example_schema.yaml"
 schema = load_schema_from_yaml(yaml_path)
 
 # Print the YAML file in a nicely formatted way
@@ -33,6 +33,9 @@ dataframe = pd.DataFrame({
     "col1": [1, 2, 3],
     "column2": [0.546, 1.568, 2.578],
 })
+
+# preserve a copy for comparison later
+dataframe_copy = dataframe.copy(deep=True)
 
 dataframe
 # %%
@@ -67,7 +70,7 @@ df_with_decimals
 # preprocessing steps.
 # When set to True, the round_before_calc argument will round the DataFrame before applying calculations,
 # as well as after.
-processed_df = processor.preprocess(dataframe, round_before_calc=False)
+processed_df = processor.preprocess(dataframe_copy, round_before_calc=False)
 processed_df
 
 # %%
