@@ -1,0 +1,6 @@
+elphick.pandera\_utils.pandera\_utils.order\_columns\_to\_match\_schema
+=======================================================================
+
+.. currentmodule:: elphick.pandera_utils.pandera_utils
+
+.. autofunction:: order_columns_to_match_schema

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elphick.pandera_utils.pandera_utils &mdash; pandera-utils  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=1a8b2067" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pandera-utils
+          </a>
+              <div class="version">
+                0.2.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Example Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pandera-utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elphick.pandera_utils.pandera_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elphick.pandera_utils.pandera_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandera</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataFrameSchema</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elphick.pandera_utils.utils.pandera_io_pandas_io</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_yaml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="order_columns_to_match_schema">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.order_columns_to_match_schema.html#elphick.pandera_utils.pandera_utils.order_columns_to_match_schema">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">order_columns_to_match_schema</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">DataFrameSchema</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Order DataFrame columns to match the schema order if coerce and metadata[&#39;order_columns&#39;] are true.</span>
+
+<span class="sd">    Columns not specified in the schema will be retained at the end of the DataFrame.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        df: The DataFrame to reorder.</span>
+<span class="sd">        schema: The Pandera DataFrameSchema defining the desired column order.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A DataFrame with columns reordered to match the schema, retaining extra columns at the end.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if both &#39;coerce&#39; and &#39;order_columns&#39; are true</span>
+    <span class="k">if</span> <span class="n">schema</span><span class="o">.</span><span class="n">coerce</span> <span class="ow">and</span> <span class="n">schema</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="n">schema</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order_columns&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">schema_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1"># Retain only columns present in the schema, in schema order</span>
+        <span class="n">reordered_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">schema_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="c1"># Retain extra columns in their original order</span>
+        <span class="n">extra_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema_columns</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">reordered_columns</span> <span class="o">+</span> <span class="n">extra_columns</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataFrameMetaProcessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to preprocess and validate DataFrames based on metadata.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.__init__">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">DataFrameSchema</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate the DataFrameMetaProcessor object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema: The DataFrameSchema object to use for preprocessing and validation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="n">DataFrameSchema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">supported_column_meta_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;unit_of_measure&#39;</span><span class="p">,</span> <span class="s1">&#39;aliases&#39;</span><span class="p">,</span> <span class="s1">&#39;decimals&#39;</span><span class="p">,</span> <span class="s1">&#39;missing_sentinels&#39;</span><span class="p">,</span> <span class="s1">&#39;category&#39;</span><span class="p">,</span>
+                                           <span class="s1">&#39;calculation&#39;</span><span class="p">]</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unit_of_measure_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;unit_of_measure&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;unit_of_measure&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alias_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">alias_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;aliases&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]:</span>
+                <span class="n">alias_dict</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">][</span><span class="s1">&#39;aliases&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">alias_dict</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculation_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;calculation&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;calculation&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decimals_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;decimals&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;decimals&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">missing_sentinels_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;missing_sentinels&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;missing_sentinels&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">category_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cat_maps</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;category&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">{</span><span class="n">sub_k</span><span class="p">:</span> <span class="n">sub_v</span> <span class="k">for</span> <span class="n">sub_k</span><span class="p">,</span> <span class="n">sub_v</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)})</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cat_maps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">category_ordered_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">col_name</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ordered&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;pandera_utils&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="s1">&#39;category&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.apply_rename_from_alias">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rename_from_alias">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_rename_from_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename columns in the DataFrame based on aliases.&quot;&quot;&quot;</span>
+        <span class="n">alias_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias_map</span>
+        <span class="n">rename_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">aliases</span> <span class="ow">in</span> <span class="n">alias_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                    <span class="n">rename_map</span><span class="p">[</span><span class="n">alias</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_name</span>
+
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">rename_map</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.apply_calculations">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_calculations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_calculations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply calculations based on the calculation metadata.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">calculation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Check for input columns</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">missing_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">dep</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">inputs</span> <span class="k">if</span> <span class="n">dep</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            <span class="n">required</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">required</span>
+
+            <span class="k">if</span> <span class="n">missing_columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">required</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing columns for calculation &#39;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">missing_columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing columns for optional (non-required) calculation &#39;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">missing_columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+            <span class="c1"># Evaluate the calculation</span>
+            <span class="n">calculated_column</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">calculation</span><span class="p">,</span> <span class="p">{},</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;series&#39;</span><span class="p">))</span>
+
+            <span class="c1"># Determine the position to insert the calculated column</span>
+            <span class="k">if</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">rightmost_input</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">)</span>
+                <span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">rightmost_input</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">calculated_column</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculated_column</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.apply_rounding">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rounding">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_rounding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Round columns based on the decimals metadata.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span> <span class="ow">and</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span><span class="p">[</span><span class="n">col_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_category_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">map_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                   <span class="n">retain_original_column</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate new columns based on the category metadata.&quot;&quot;&quot;</span>
+        <span class="n">new_columns</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">schema_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">retain_original_column</span><span class="p">:</span>
+            <span class="c1"># Retrieve allowable categories</span>
+            <span class="n">allowable_categories</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="s1">&#39;checks&#39;</span> <span class="ow">in</span> <span class="n">schema_column</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">check</span> <span class="ow">in</span> <span class="n">schema_column</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;checks&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">check</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;isin&#39;</span><span class="p">:</span>
+                        <span class="n">allowable_categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">check</span><span class="o">.</span><span class="n">_check_kwargs</span><span class="p">[</span><span class="s1">&#39;allowed_values&#39;</span><span class="p">])</span>
+                        <span class="k">break</span>
+
+            <span class="n">new_columns</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">CategoricalDtype</span><span class="p">(</span><span class="n">categories</span><span class="o">=</span><span class="n">allowable_categories</span><span class="p">,</span>
+                                                                         <span class="n">ordered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">category_ordered_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                                                             <span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">map_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_columns</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">column</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;dtype&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">new_columns</span>
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.apply_missing_sentinels">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_missing_sentinels">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_missing_sentinels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply missing sentinels based on the missing_sentinels metadata.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">sentinels</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_sentinels_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col_name</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="n">col_name</span><span class="p">]])</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sentinels</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.apply_category_maps">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_category_maps">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_category_maps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">maps_to_apply</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">retain_orig_cat_col</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply category maps to create new columns based on the category metadata.&quot;&quot;&quot;</span>
+        <span class="c1"># assert the supplied maps are valid</span>
+        <span class="n">all_map_keys</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">maps_to_apply</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">map_name</span> <span class="ow">in</span> <span class="n">maps_to_apply</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">map_name</span> <span class="ow">in</span> <span class="n">all_map_keys</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Map name &#39;</span><span class="si">{</span><span class="n">map_name</span><span class="si">}</span><span class="s2">&#39; not found in category_map&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maps_to_apply</span> <span class="o">=</span> <span class="n">all_map_keys</span>
+
+        <span class="c1"># Apply the maps</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column &#39;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&#39; not found in DataFrame&quot;</span><span class="p">)</span>
+            <span class="n">original_col_position</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="n">new_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_category_columns</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">retain_orig_cat_col</span><span class="p">)</span>
+
+            <span class="c1"># Insert columns at the original position, and to the right of the original</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span> <span class="ow">in</span> <span class="n">new_columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">col_name</span> <span class="o">==</span> <span class="n">col</span><span class="p">:</span>
+                    <span class="n">df</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_data</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">original_col_position</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">original_col_position</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.preprocess">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.preprocess">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">round_before_calc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                   <span class="n">cat_maps_to_apply</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cat_retain_orig_cat_col</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Preprocess a DataFrame based on the metadata.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df: The DataFrame to preprocess.</span>
+<span class="sd">            round_before_calc: A boolean indicating whether to round columns before applying calculations,</span>
+<span class="sd">            as well as after.</span>
+<span class="sd">            cat_maps_to_apply: A list of category maps to apply. If None, all maps will be applied.</span>
+<span class="sd">            cat_retain_orig_cat_col: A boolean indicating whether to retain the original category columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check for DataFrame-level metadata for column ordering</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order_columns&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">order_columns_to_match_schema</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias_map</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_rename_from_alias</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_sentinels_map</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_missing_sentinels</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Handle rounding before calculations if specified</span>
+        <span class="k">if</span> <span class="n">round_before_calc</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_rounding</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Determine all inputs for calculated columns</span>
+        <span class="n">calculation_inputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">dep</span> <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">calc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_map</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Process each column</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_map</span><span class="p">:</span>
+                <span class="c1"># Perform calculations</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_calculations</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+            <span class="c1"># Skip rounding for columns that are inputs of calculated columns</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">round_before_calc</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculation_map</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">calculation_inputs</span><span class="p">:</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_rounding</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span><span class="p">:</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_category_maps</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">maps_to_apply</span><span class="o">=</span><span class="n">cat_maps_to_apply</span><span class="p">,</span>
+                                              <span class="n">retain_orig_cat_col</span><span class="o">=</span><span class="n">cat_retain_orig_cat_col</span><span class="p">)</span>
+
+        <span class="c1"># Apply rounding after calculations if needed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">round_before_calc</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimals_map</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_rounding</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="c1"># Last chance column ordering</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pandera_utils&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order_columns&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">order_columns_to_match_schema</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.validate">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.validate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">return_calculated_columns</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate a DataFrame based on the schema.&quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_calculated_columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculation_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="DataFrameMetaProcessor.check_schema">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.html#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.check_schema">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the schema is valid.&quot;&quot;&quot;</span>
+
+        <span class="c1"># Check the aliases are all unique</span>
+        <span class="n">alias_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias_map</span>
+        <span class="n">all_aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">alias</span> <span class="k">for</span> <span class="n">aliases</span> <span class="ow">in</span> <span class="n">alias_map</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">]</span>
+        <span class="n">duplicate_aliases</span> <span class="o">=</span> <span class="p">{</span><span class="n">alias</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">all_aliases</span> <span class="k">if</span> <span class="n">all_aliases</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">duplicate_aliases</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate aliases found: </span><span class="si">{</span><span class="n">duplicate_aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check that all alias keys are a list of strings</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">aliases</span> <span class="ow">in</span> <span class="n">alias_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Alias &#39;</span><span class="si">{</span><span class="n">alias</span><span class="si">}</span><span class="s2">&#39; in column &#39;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&#39; is not a string. All alias keys must be strings.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check all columns with metadata.category values (maps) have the same keys</span>
+        <span class="n">category_maps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_maps</span>
+        <span class="k">if</span> <span class="n">category_maps</span><span class="p">:</span>
+            <span class="c1"># Get the set of keys from the first column&#39;s category map</span>
+            <span class="n">reference_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">category_maps</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">category_map</span> <span class="ow">in</span> <span class="n">category_maps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">category_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">!=</span> <span class="n">reference_keys</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Inconsistent category map keys in column &#39;</span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;Expected keys: </span><span class="si">{</span><span class="n">reference_keys</span><span class="si">}</span><span class="s2">, but got: </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">category_map</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="load_schema_from_yaml">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.load_schema_from_yaml.html#elphick.pandera_utils.pandera_utils.load_schema_from_yaml">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_schema_from_yaml</span><span class="p">(</span><span class="n">yaml_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrameSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a DataFrameSchema from a YAML file.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">from_yaml</span><span class="p">(</span><span class="n">yaml_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="merge_schemas">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.merge_schemas.html#elphick.pandera_utils.pandera_utils.merge_schemas">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge_schemas</span><span class="p">(</span><span class="n">list_of_schemas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DataFrameSchema</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DataFrameSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge a list of DataFrameSchemas into a single DataFrameSchema.</span>
+
+<span class="sd">    The merged schema will contain all columns and checks from the input schemas.</span>
+<span class="sd">    The schema for root level properties or the index will be taken from the first schema in the list.</span>
+<span class="sd">    If there are multiple columns defined, the column from the first schema in the list will be used.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        list_of_schemas:  The list of DataFrameSchemas to merge.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A DataFrameSchema that combines all the input schemas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">list_of_schemas</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The list of schemas is empty&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Start with the first schema</span>
+    <span class="n">base_schema</span> <span class="o">=</span> <span class="n">list_of_schemas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Merge columns</span>
+    <span class="n">merged_columns</span> <span class="o">=</span> <span class="n">base_schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="n">list_of_schemas</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">merged_columns</span><span class="p">:</span>
+                <span class="n">merged_columns</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">col</span>
+
+    <span class="c1"># Merge checks</span>
+    <span class="n">merged_checks</span> <span class="o">=</span> <span class="n">base_schema</span><span class="o">.</span><span class="n">checks</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="n">list_of_schemas</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">for</span> <span class="n">check</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">checks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">check</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">merged_checks</span><span class="p">:</span>
+                <span class="n">merged_checks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">check</span><span class="p">)</span>
+
+    <span class="c1"># Create the merged schema</span>
+    <span class="n">merged_schema</span> <span class="o">=</span> <span class="n">DataFrameSchema</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">merged_columns</span><span class="p">,</span>
+        <span class="n">checks</span><span class="o">=</span><span class="n">merged_checks</span><span class="p">,</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="n">coerce</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">coerce</span><span class="p">,</span>
+        <span class="n">strict</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">strict</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">ordered</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">ordered</span><span class="p">,</span>
+        <span class="n">unique</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">unique</span><span class="p">,</span>
+        <span class="n">report_duplicates</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">report_duplicates</span><span class="p">,</span>
+        <span class="n">unique_column_names</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">unique_column_names</span><span class="p">,</span>
+        <span class="n">add_missing_columns</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">add_missing_columns</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">base_schema</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">merged_schema</span></div>
+
+
+
+<div class="viewcode-block" id="load_merged_schema_from_yaml">
+<a class="viewcode-back" href="../../../api/_autosummary/elphick.pandera_utils.pandera_utils.load_merged_schema_from_yaml.html#elphick.pandera_utils.pandera_utils.load_merged_schema_from_yaml">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_merged_schema_from_yaml</span><span class="p">(</span><span class="n">yaml_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DataFrameSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load and merge DataFrameSchemas from a list of YAML files.&quot;&quot;&quot;</span>
+    <span class="n">schemas</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_schema_from_yaml</span><span class="p">(</span><span class="n">yaml_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">yaml_path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">merge_schemas</span><span class="p">(</span><span class="n">schemas</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Greg Elphick.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+elphick.pandera\_utils.pandera\_utils.merge\_schemas
+====================================================
+
+.. currentmodule:: elphick.pandera_utils.pandera_utils
+
+.. autofunction:: merge_schemas

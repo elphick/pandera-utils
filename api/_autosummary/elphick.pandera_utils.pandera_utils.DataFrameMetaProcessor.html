@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor &mdash; pandera-utils  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=1a8b2067" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="License" href="../../license/license.html" />
+    <link rel="prev" title="elphick.pandera_utils.pandera_utils.order_columns_to_match_schema" href="elphick.pandera_utils.pandera_utils.order_columns_to_match_schema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pandera-utils
+          </a>
+              <div class="version">
+                0.2.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Example Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary/glossary.html">Glossary</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="elphick.pandera_utils.pandera_utils.html">elphick.pandera_utils.pandera_utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="elphick.pandera_utils.pandera_utils.load_merged_schema_from_yaml.html">elphick.pandera_utils.pandera_utils.load_merged_schema_from_yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elphick.pandera_utils.pandera_utils.load_schema_from_yaml.html">elphick.pandera_utils.pandera_utils.load_schema_from_yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elphick.pandera_utils.pandera_utils.merge_schemas.html">elphick.pandera_utils.pandera_utils.merge_schemas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elphick.pandera_utils.pandera_utils.order_columns_to_match_schema.html">elphick.pandera_utils.pandera_utils.order_columns_to_match_schema</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor"><code class="docutils literal notranslate"><span class="pre">DataFrameMetaProcessor</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../license/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pandera-utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="elphick.pandera_utils.pandera_utils.html">elphick.pandera_utils.pandera_utils</a></li>
+      <li class="breadcrumb-item active">elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/_autosummary/elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="elphick-pandera-utils-pandera-utils-dataframemetaprocessor">
+<h1>elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor<a class="headerlink" href="#elphick-pandera-utils-pandera-utils-dataframemetaprocessor" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">elphick.pandera_utils.pandera_utils.</span></span><span class="sig-name descname"><span class="pre">DataFrameMetaProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor" title="Link to this definition"></a></dt>
+<dd><p>A class to preprocess and validate DataFrames based on metadata.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Instantiate the DataFrameMetaProcessor object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>schema</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrameSchema</span></code></span>) – The DataFrameSchema object to use for preprocessing and validation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.__init__" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(schema)</p></td>
+<td><p>Instantiate the DataFrameMetaProcessor object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_calculations" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_calculations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_calculations</span></code></a>(df)</p></td>
+<td><p>Apply calculations based on the calculation metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_category_maps" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_category_maps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_category_maps</span></code></a>(df[, maps_to_apply, ...])</p></td>
+<td><p>Apply category maps to create new columns based on the category metadata.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_missing_sentinels" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_missing_sentinels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_missing_sentinels</span></code></a>(df)</p></td>
+<td><p>Apply missing sentinels based on the missing_sentinels metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rename_from_alias" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rename_from_alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_rename_from_alias</span></code></a>(df)</p></td>
+<td><p>Rename columns in the DataFrame based on aliases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rounding" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rounding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_rounding</span></code></a>(df[, columns])</p></td>
+<td><p>Round columns based on the decimals metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.check_schema" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.check_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_schema</span></code></a>()</p></td>
+<td><p>Check if the schema is valid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.preprocess" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess</span></code></a>(df[, round_before_calc, ...])</p></td>
+<td><p>Preprocess a DataFrame based on the metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.validate" title="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>(df[, return_calculated_columns])</p></td>
+<td><p>Validate a DataFrame based on the schema.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">alias_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculation_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">category_maps</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">category_ordered_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">decimals_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">missing_sentinels_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unit_of_measure_map</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OrderedDict</span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict" title="Link to this definition"></a></dt>
+<dd><p>Dictionary that remembers insertion order</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">od.</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.clear" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">shallow</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">od</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.copy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.fromkeys">
+<span class="sig-name descname"><span class="pre">fromkeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.fromkeys" title="Link to this definition"></a></dt>
+<dd><p>Create a new ordered dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.items">
+<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.items" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.move_to_end">
+<span class="sig-name descname"><span class="pre">move_to_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.move_to_end" title="Link to this definition"></a></dt>
+<dd><p>Move an existing element to the end (or beginning if last is false).</p>
+<p>Raise KeyError if the element does not exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.pop" title="Link to this definition"></a></dt>
+<dd><p>If the key is not found, return the default if given; otherwise,
+raise a KeyError.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.popitem">
+<span class="sig-name descname"><span class="pre">popitem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.popitem" title="Link to this definition"></a></dt>
+<dd><p>Remove and return a (key, value) pair from the dictionary.</p>
+<p>Pairs are returned in LIFO order if last is true or FIFO order if false.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.setdefault">
+<span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.setdefault" title="Link to this definition"></a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">mapping/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.update" title="Link to this definition"></a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.values">
+<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.OrderedDict.values" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_calculations">
+<span class="sig-name descname"><span class="pre">apply_calculations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.apply_calculations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_calculations" title="Link to this definition"></a></dt>
+<dd><p>Apply calculations based on the calculation metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_category_maps">
+<span class="sig-name descname"><span class="pre">apply_category_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maps_to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_orig_cat_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.apply_category_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_category_maps" title="Link to this definition"></a></dt>
+<dd><p>Apply category maps to create new columns based on the category metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_missing_sentinels">
+<span class="sig-name descname"><span class="pre">apply_missing_sentinels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.apply_missing_sentinels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_missing_sentinels" title="Link to this definition"></a></dt>
+<dd><p>Apply missing sentinels based on the missing_sentinels metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rename_from_alias">
+<span class="sig-name descname"><span class="pre">apply_rename_from_alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.apply_rename_from_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rename_from_alias" title="Link to this definition"></a></dt>
+<dd><p>Rename columns in the DataFrame based on aliases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rounding">
+<span class="sig-name descname"><span class="pre">apply_rounding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.apply_rounding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.apply_rounding" title="Link to this definition"></a></dt>
+<dd><p>Round columns based on the decimals metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.check_schema">
+<span class="sig-name descname"><span class="pre">check_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.check_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.check_schema" title="Link to this definition"></a></dt>
+<dd><p>Check if the schema is valid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.preprocess">
+<span class="sig-name descname"><span class="pre">preprocess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_before_calc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_maps_to_apply</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_retain_orig_cat_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.preprocess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.preprocess" title="Link to this definition"></a></dt>
+<dd><p>Preprocess a DataFrame based on the metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span>) – The DataFrame to preprocess.</p></li>
+<li><p><strong>round_before_calc</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – A boolean indicating whether to round columns before applying calculations,</p></li>
+<li><p><strong>after.</strong> (<em>as well as</em>)</p></li>
+<li><p><strong>cat_maps_to_apply</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>) – A list of category maps to apply. If None, all maps will be applied.</p></li>
+<li><p><strong>cat_retain_orig_cat_col</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – A boolean indicating whether to retain the original category columns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_calculated_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/elphick/pandera_utils/pandera_utils.html#DataFrameMetaProcessor.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elphick.pandera_utils.pandera_utils.DataFrameMetaProcessor.validate" title="Link to this definition"></a></dt>
+<dd><p>Validate a DataFrame based on the schema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elphick.pandera_utils.pandera_utils.order_columns_to_match_schema.html" class="btn btn-neutral float-left" title="elphick.pandera_utils.pandera_utils.order_columns_to_match_schema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../license/license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Greg Elphick.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merging Schemas &mdash; pandera-utils  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=1a8b2067" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../glossary/glossary.html" />
+    <link rel="prev" title="Basic usage" href="01_basic_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pandera-utils
+          </a>
+              <div class="version">
+                0.2.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Example Gallery</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_basic_usage.html">Basic usage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Merging Schemas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-schemas">Load Schemas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge-schemas">Merge Schemas</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license/license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pandera-utils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Example Gallery</a></li>
+      <li class="breadcrumb-item active">Merging Schemas</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/auto_examples/02_merging_schemas.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-02-merging-schemas-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="merging-schemas">
+<span id="sphx-glr-auto-examples-02-merging-schemas-py"></span><h1>Merging Schemas<a class="headerlink" href="#merging-schemas" title="Link to this heading"></a></h1>
+<p>In this example, we will demonstrate how to merge multiple schemas</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elphick.pandera_utils.pandera_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_schema_from_yaml</span><span class="p">,</span> <span class="n">merge_schemas</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elphick.pandera_utils.utils.pandera_io_pandas_io</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_yaml</span>
+
+<span class="vm">__file__</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()))</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">print_schemafile</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">schema_yaml</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">schema_yaml</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<section id="load-schemas">
+<h2>Load Schemas<a class="headerlink" href="#load-schemas" title="Link to this heading"></a></h2>
+<p>Load and view the schemas from the YAML files</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">schema_filepath_1</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="vm">__file__</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;assets/aliases_schema.yaml&quot;</span>
+<span class="n">schema_filepath_2</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="vm">__file__</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;assets/category_schema.yaml&quot;</span>
+<span class="n">schema_filepath_3</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="vm">__file__</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;assets/missing_sentinels_schema.yaml&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">print_schemafile</span><span class="p">(</span><span class="n">schema_filepath_1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>columns:
+  my_pet_column:
+    dtype: object
+    metadata:
+      pandera_utils:
+        aliases:
+        - pets
+        - my_pets
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">print_schemafile</span><span class="p">(</span><span class="n">schema_filepath_2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>columns:
+  my_color_column:
+    dtype: category
+    checks:
+      isin:
+      - R
+      - G
+      - B
+    metadata:
+      pandera_utils:
+        category:
+          add_all_categories: true
+          ordered: false
+          label:
+            map:
+              R: Red
+              G: Green
+              B: Blue
+            dtype: category
+          description:
+            map:
+              R: The color red
+              G: The color green
+              B: The color blue
+            dtype: category
+          wavelength:
+            map:
+              R: 700
+              G: 546
+              B: 435
+            dtype: int
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">print_schemafile</span><span class="p">(</span><span class="n">schema_filepath_3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>columns:
+  my_nullable_int_column:
+    dtype: Int8
+    nullable: true
+    coerce: true
+    metadata:
+      pandera_utils:
+        missing_sentinels:
+        - -1
+        - -9
+</pre></div>
+</div>
+</section>
+<section id="merge-schemas">
+<h2>Merge Schemas<a class="headerlink" href="#merge-schemas" title="Link to this heading"></a></h2>
+<p>Merge the schemas into a single schema</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">schema_1</span> <span class="o">=</span> <span class="n">load_schema_from_yaml</span><span class="p">(</span><span class="n">schema_filepath_1</span><span class="p">)</span>
+<span class="n">schema_2</span> <span class="o">=</span> <span class="n">load_schema_from_yaml</span><span class="p">(</span><span class="n">schema_filepath_2</span><span class="p">)</span>
+<span class="n">schema_3</span> <span class="o">=</span> <span class="n">load_schema_from_yaml</span><span class="p">(</span><span class="n">schema_filepath_3</span><span class="p">)</span>
+<span class="n">merged_schema</span> <span class="o">=</span> <span class="n">merge_schemas</span><span class="p">([</span><span class="n">schema_1</span><span class="p">,</span> <span class="n">schema_2</span><span class="p">,</span> <span class="n">schema_3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Print the merged schema in a nicely formatted way
+use a temp file (formatting workaround only)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">merged_schema</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>schema_type: dataframe
+version: 0.0.0+dev0
+columns:
+  my_pet_column:
+    title: null
+    description: null
+    dtype: object
+    nullable: false
+    checks: null
+    unique: false
+    coerce: false
+    required: true
+    regex: false
+    metadata:
+      pandera_utils:
+        aliases:
+        - pets
+        - my_pets
+  my_color_column:
+    title: null
+    description: null
+    dtype: category
+    nullable: false
+    checks:
+      isin:
+        value:
+        - R
+        - G
+        - B
+        options:
+          raise_warning: false
+          ignore_na: true
+    unique: false
+    coerce: false
+    required: true
+    regex: false
+    metadata:
+      pandera_utils:
+        category:
+          add_all_categories: true
+          ordered: false
+          label:
+            map:
+              R: Red
+              G: Green
+              B: Blue
+            dtype: category
+          description:
+            map:
+              R: The color red
+              G: The color green
+              B: The color blue
+            dtype: category
+          wavelength:
+            map:
+              R: 700
+              G: 546
+              B: 435
+            dtype: int
+  my_nullable_int_column:
+    title: null
+    description: null
+    dtype: Int8
+    nullable: true
+    checks: null
+    unique: false
+    coerce: true
+    required: true
+    regex: false
+    metadata:
+      pandera_utils:
+        missing_sentinels:
+        - -1
+        - -9
+checks: null
+index: null
+dtype: null
+coerce: false
+strict: false
+name: null
+ordered: false
+unique: null
+report_duplicates: all
+unique_column_names: false
+add_missing_columns: false
+title: null
+description: null
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.016 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-merging-schemas-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/71454ccb3c99cf10c3d466f9099553b2/02_merging_schemas.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02_merging_schemas.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/818fa7b961e32d720935cfb04fc631c3/02_merging_schemas.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">02_merging_schemas.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="01_basic_usage.html" class="btn btn-neutral float-left" title="Basic usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../glossary/glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Greg Elphick.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

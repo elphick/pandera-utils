@@ -1,0 +1,41 @@
+﻿elphick.pandera\_utils.pandera\_utils
+=====================================
+
+.. automodule:: elphick.pandera_utils.pandera_utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      load_merged_schema_from_yaml
+      load_schema_from_yaml
+      merge_schemas
+      order_columns_to_match_schema
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      DataFrameMetaProcessor
+   
+   
+
+   
+   
+   
+
+
+
