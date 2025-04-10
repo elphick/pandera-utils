@@ -36,6 +36,3 @@ Finally, you can validate the dataframe using the schema.
 
     processor.validate(processed_df)
 
-To disable the pre-processing on a particular column, you can set the
-``coerce`` key to ``False`` in the schema.  While the core pandera package uses coerce to
-coerce types, pander-utils uses the same key to disable pre-processing.
