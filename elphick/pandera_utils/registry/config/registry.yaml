@@ -1,0 +1,10 @@
+# config/registry.yaml
+
+# Any SQLAlchemy-friendly URL works here:
+# - SQLite (file-based, good for your current stage)
+# - Postgres
+# - etc.
+db_url: "sqlite:///./.cache/registry.sqlite"
+
+# Optional: show all SQL emitted by SQLAlchemy (useful while debugging)
+echo: false
